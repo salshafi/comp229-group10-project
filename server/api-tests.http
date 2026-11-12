@@ -1,0 +1,9 @@
+### Needs the VS Code "REST Client" extension  [Week 5]
+@base = http://localhost:4000/api
+
+### TODO: health
+### TODO: register (valid), register (duplicate email -> 400)
+### TODO: login (valid), login (wrong password -> 401)
+### TODO: create item (with token -> 201), create item (no token -> 401)
+### TODO: list, get one, update, delete
+### Record every result in docs/test-results.md
