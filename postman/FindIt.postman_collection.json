@@ -1,0 +1,17 @@
+{
+  "info": { "name": "FindIt API Tests", "description": "COMP229 first-release API test collection. Set baseUrl and token variables.", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [{ "key": "baseUrl", "value": "http://localhost:5000" }, { "key": "token", "value": "" }, { "key": "itemId", "value": "" }],
+  "item": [
+    { "name": "Health check", "request": { "method": "GET", "url": "{{baseUrl}}/api/health" } },
+    { "name": "Register", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"name\": \"Demo Student\",\n  \"email\": \"demo.student@example.com\",\n  \"password\": \"StudentPass123\"\n}" }, "url": "{{baseUrl}}/api/auth/register" } },
+    { "name": "Login", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"email\": \"demo.student@example.com\",\n  \"password\": \"StudentPass123\"\n}" }, "url": "{{baseUrl}}/api/auth/login" } },
+    { "name": "Current user (set token)", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": "{{baseUrl}}/api/auth/me" } },
+    { "name": "Create item", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"title\": \"Blue water bottle\",\n  \"description\": \"A blue insulated bottle left near the library.\",\n  \"category\": \"Accessories\",\n  \"type\": \"found\",\n  \"location\": \"Main library\",\n  \"date\": \"2026-11-14\",\n  \"contactEmail\": \"demo.student@example.com\"\n}" }, "url": "{{baseUrl}}/api/items" } },
+    { "name": "List items", "request": { "method": "GET", "url": "{{baseUrl}}/api/items" } },
+    { "name": "Search items", "request": { "method": "GET", "url": "{{baseUrl}}/api/items?search=water&type=found" } },
+    { "name": "Get one item", "request": { "method": "GET", "url": "{{baseUrl}}/api/items/{{itemId}}" } },
+    { "name": "Update item (owner/admin token)", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"status\": \"returned\"\n}" }, "url": "{{baseUrl}}/api/items/{{itemId}}" } },
+    { "name": "Delete item (owner/admin token)", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": "{{baseUrl}}/api/items/{{itemId}}" } },
+    { "name": "Unauthorized create (expected 401)", "request": { "method": "POST", "url": "{{baseUrl}}/api/items", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode":"raw","raw":"{}"} } }
+  ]
+}

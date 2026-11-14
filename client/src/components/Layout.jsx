@@ -1,0 +1,128 @@
+
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import {
+  Search,
+  LayoutDashboard,
+  PlusCircle,
+  LogOut,
+  Bell,
+  CircleHelp
+} from 'lucide-react';
+import { useAuth } from '../context/AuthContext.jsx';
+
+export default function Layout() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  function signOut() {
+    logout();
+    navigate('/login');
+  }
+
+  return (
+    <div className="app-shell">
+      <aside className="sidebar">
+
+        {/* FindIt Logo */}
+        <div className="brand">
+          <img
+            src="/findit-logo.png"
+            alt="FindIt Campus Lost and Found"
+            className="brand-logo"
+          />
+        </div>
+
+        <div className="workspace-label">CAMPUS PORTAL</div>
+
+        <nav className="side-nav">
+          <NavLink to="/" end>
+            <LayoutDashboard size={18} />
+            Overview
+          </NavLink>
+
+          <NavLink to="/items" end>
+            <Search size={18} />
+            Browse items
+          </NavLink>
+
+          <NavLink to="/items/new">
+            <PlusCircle size={18} />
+            Report an item
+          </NavLink>
+        </nav>
+
+        <div className="sidebar-bottom">
+          <div className="help-card">
+            <CircleHelp size={18} />
+            <div>
+              <strong>Need a hand?</strong>
+              <span>Check the help desk</span>
+            </div>
+          </div>
+
+          <button className="profile-row" onClick={signOut}>
+            <span className="avatar">
+              {user?.name?.[0]?.toUpperCase() || 'U'}
+            </span>
+
+            <span className="profile-info">
+              <strong>{user?.name}</strong>
+              <small>
+                {user?.role === 'admin'
+                  ? 'Administrator'
+                  : 'Student account'}
+              </small>
+            </span>
+
+            <LogOut size={17} />
+          </button>
+        </div>
+      </aside>
+
+      <main className="main-area">
+        <header className="topbar">
+
+          {/* Mobile FindIt Logo */}
+          <div className="mobile-brand">
+            <img
+              src="/findit-logo.png"
+              alt="FindIt"
+              className="mobile-brand-logo"
+            />
+          </div>
+
+          <div className="breadcrumb">
+            Campus community <span>/</span>
+            <strong>Lost &amp; Found</strong>
+          </div>
+
+          <div className="top-actions">
+            <span className="secure-pill">
+              <span />
+              Campus space
+            </span>
+
+            <button
+              className="icon-button"
+              aria-label="Notifications"
+            >
+              <Bell size={18} />
+            </button>
+
+            <span className="avatar small">
+              {user?.name?.[0]?.toUpperCase() || 'U'}
+            </span>
+          </div>
+        </header>
+
+        <div className="page-content">
+          <Outlet />
+        </div>
+
+        <footer className="footer">
+          FindIt <span>·</span> Helping campus belongings find their way home.
+        </footer>
+      </main>
+    </div>
+  );
+}
